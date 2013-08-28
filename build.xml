@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="build" name="SimpleJarApp">
+	<property name="jarName" value="SimpleJarApp.jar" />
+
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"
+		classpath="extlib/launch4j/launch4j.jar" />
+
+	<target name="build" description="ビルドし実行可能jarを構築する">
+		<delete dir="work" />
+		<mkdir dir="work" />
+		<javac srcdir="src" encoding="UTF-8" target="1.6" debug="true"
+			destdir="work" />
+		<copy toDir="work">
+			<fileset dir="src">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+		<jar basedir="work" destfile="${jarName}">
+			<manifest>
+				<attribute name="Main-Class" value="jp.seraphyware.smplejarapp.SimpleJarApp" />
+			</manifest>
+		</jar>
+		<delete dir="work" />
+	</target>
+
+	<target name="makeWrap" description="launch4jでexe化する" depends="build">
+		<launch4j configFile="launch4j.xml" />
+	</target>
+
+</project>
